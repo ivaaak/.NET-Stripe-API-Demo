@@ -1,5 +1,4 @@
-﻿using System;
-namespace Models.Stripe
+﻿namespace Models
 {
     public record StripePayment(
         string CustomerId,
@@ -7,6 +6,7 @@ namespace Models.Stripe
         string Description,
         string Currency,
         long Amount,
-        string PaymentId);
+        string PaymentId
+    );
 }
 

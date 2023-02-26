@@ -1,7 +1,6 @@
-﻿using System;
-using Models.Stripe;
+﻿using Models;
 
-namespace Contracts
+namespace Services
 {
     public interface IStripeAppService
     {

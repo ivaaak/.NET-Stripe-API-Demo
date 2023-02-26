@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -16,15 +16,10 @@
     <None Remove="Controllers\" />
     <None Remove="Stripe.net" />
     <None Remove="Models\" />
-    <None Remove="Models\Stripe\" />
     <None Remove="Contracts\" />
     <None Remove="Application\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Models\Stripe\" />
-    <Folder Include="Contracts\" />
-    <Folder Include="Application\" />
   </ItemGroup>
 </Project>

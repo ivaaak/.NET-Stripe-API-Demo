@@ -1,6 +1,5 @@
-﻿using System;
-using Contracts;
-using Models.Stripe;
+﻿using Models;
+using Services;
 using Stripe;
 
 namespace Application
