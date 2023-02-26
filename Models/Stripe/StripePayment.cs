@@ -1,7 +1,7 @@
 ﻿using System;
-namespace Stripe_Payments_Web_Api.Models.Stripe
+namespace Models.Stripe
 {
-	public record StripePayment(
+    public record StripePayment(
         string CustomerId,
         string ReceiptEmail,
         string Description,

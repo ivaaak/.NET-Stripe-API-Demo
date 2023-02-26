@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Stripe_Payments_Web_Api</RootNamespace>
+    <RootNamespace>Stripe-Web-Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

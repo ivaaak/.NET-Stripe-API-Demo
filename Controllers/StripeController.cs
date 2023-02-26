@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Contracts;
 using Microsoft.AspNetCore.Mvc;
-using Stripe_Payments_Web_Api.Contracts;
-using Stripe_Payments_Web_Api.Models.Stripe;
+using Models.Stripe;
 
-namespace Stripe_Payments_Web_Api.Controllers
+namespace Controllers
 {
     [Route("api/[controller]")]
     public class StripeController : Controller

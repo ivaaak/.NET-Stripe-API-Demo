@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Application;
+using Contracts;
 using Stripe;
-using Stripe_Payments_Web_Api.Application;
-using Stripe_Payments_Web_Api.Contracts;
 
-namespace Stripe_Payments_Web_Api
+namespace Stripe_Web_Api
 {
-	public static class StripeInfrastructure
+    public static class ServiceExtension
     {
 		public static IServiceCollection AddStripeInfrastructure(this IServiceCollection services, IConfiguration configuration)
 		{

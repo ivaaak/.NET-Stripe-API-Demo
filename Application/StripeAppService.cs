@@ -1,25 +1,25 @@
 ﻿using System;
+using Contracts;
+using Models.Stripe;
 using Stripe;
-using Stripe_Payments_Web_Api.Contracts;
-using Stripe_Payments_Web_Api.Models.Stripe;
 
-namespace Stripe_Payments_Web_Api.Application
+namespace Application
 {
-	public class StripeAppService : IStripeAppService
-	{
+    public class StripeAppService : IStripeAppService
+    {
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
 
-		public StripeAppService(
+        public StripeAppService(
             ChargeService chargeService,
             CustomerService customerService,
             TokenService tokenService)
-		{
+        {
             _chargeService = chargeService;
             _customerService = customerService;
             _tokenService = tokenService;
-		}
+        }
 
         /// <summary>
         /// Create a new customer at Stripe through API using customer and card details from records.
@@ -57,7 +57,7 @@ namespace Stripe_Payments_Web_Api.Application
             Customer createdCustomer = await _customerService.CreateAsync(customerOptions, null, ct);
 
             // Return the created customer at stripe
-            return new StripeCustomer(createdCustomer.Name, createdCustomer.Email,createdCustomer.Id);
+            return new StripeCustomer(createdCustomer.Name, createdCustomer.Email, createdCustomer.Id);
         }
 
         /// <summary>

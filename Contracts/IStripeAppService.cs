@@ -1,12 +1,12 @@
 ﻿using System;
-using Stripe_Payments_Web_Api.Models.Stripe;
+using Models.Stripe;
 
-namespace Stripe_Payments_Web_Api.Contracts
+namespace Contracts
 {
-	public interface IStripeAppService
-	{
-		Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct);
-		Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
-	}
+    public interface IStripeAppService
+    {
+        Task<StripeCustomer> AddStripeCustomerAsync(AddStripeCustomer customer, CancellationToken ct);
+        Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct);
+    }
 }
 

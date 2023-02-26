@@ -1,9 +1,9 @@
 ﻿using System;
-namespace Stripe_Payments_Web_Api.Models.Stripe
+namespace Models.Stripe
 {
-	public record StripeCustomer(
-		string Name,
-		string Email,
-		string CustomerId);
+    public record StripeCustomer(
+        string Name,
+        string Email,
+        string CustomerId);
 }
 
