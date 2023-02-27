@@ -10,15 +10,18 @@ namespace Application
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
+        private readonly PaymentIntentService _paymentIntentService;
 
         public StripeAppService(
             ChargeService chargeService,
             CustomerService customerService,
-            TokenService tokenService)
+            TokenService tokenService,
+            PaymentIntentService paymentIntentService)
         {
             _chargeService = chargeService;
             _customerService = customerService;
             _tokenService = tokenService;
+            _paymentIntentService = paymentIntentService;
         }
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace Application
         /// </summary>
         /// <param name="payment">Stripe Payment</param>
         /// <param name="ct">Cancellation Token</param>
-        /// <returns><Stripe Payment/returns>
+        /// <returns>Stripe Payment</returns>
         public async Task<StripePayment> AddStripePaymentAsync(AddStripePayment payment, CancellationToken ct)
         {
             try
@@ -124,6 +127,104 @@ namespace Application
                 }
             }
         }
+
+
+        /// <summary>
+        /// Retrieves a customer with the specified ID from Stripe API.
+        /// </summary>
+        /// <param name="customerId">The ID of the customer to retrieve.</param>
+        /// <param name="options">Additional options for the customer retrieval request.</param>
+        /// <param name="requestOptions">Request options for the API request.</param>
+        /// <param name="cancellationToken">Cancellation token for the async operation.</param>
+        /// <returns>Returns a Task that represents the asynchronous operation. The task result contains the retrieved Stripe customer object.</returns>
+        public async Task<StripeCustomer> GetStripeCustomerByIdAsync(
+            string customerId, 
+            CustomerGetOptions options = null, 
+            RequestOptions requestOptions = null, 
+            CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                // Retrieve the customer from Stripe API
+                CustomerService customerService = new CustomerService();
+                Customer stripeCustomer = await customerService.GetAsync(customerId, options = null, requestOptions = null, cancellationToken = default);
+
+                // Map the Stripe customer to our domain model
+                StripeCustomer customer = new StripeCustomer(stripeCustomer.Name, stripeCustomer.Email, stripeCustomer.Id);
+
+                return customer;
+            }
+            catch (StripeException ex)
+            {
+                switch (ex.StripeError.Type)
+                {
+                    case "api_connection_error":
+                        throw new Exception("A problem occurred while connecting to the API.", ex);
+                    case "api_error":
+                        throw new Exception("An error occurred while making the API request.", ex);
+                    case "authentication_error":
+                        throw new Exception("Authentication with the API failed.", ex);
+                    case "card_error":
+                        throw new Exception("An error occurred while processing the credit card.", ex);
+                    case "invalid_request_error":
+                        throw new Exception("The request to the API was invalid.", ex);
+                    case "rate_limit_error":
+                        throw new Exception("The API rate limit was exceeded.", ex);
+                    default:
+                        throw new Exception("An unknown error occurred while communicating with the API.", ex);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves a PaymentIntent object from the Stripe API.
+        /// </summary>
+        /// <param name="paymentIntentId">The ID of the PaymentIntent to retrieve.</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The retrieved PaymentIntent object.</returns>
+        public async Task<PaymentIntent> GetPaymentIntentAsync(string paymentIntentId, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var paymentIntent = await _paymentIntentService.GetAsync(paymentIntentId, cancellationToken: cancellationToken);
+
+                return paymentIntent;
+            }
+            catch (StripeException e)
+            {
+                if (e.StripeError != null)
+                {
+                    // Handle specific error types.
+                    switch (e.StripeError.Type)
+                    {
+                        case "api_connection_error":
+                            throw new Exception("Network communication with Stripe failed.");
+                        case "api_error":
+                            throw new Exception("An error occurred while communicating with Stripe.");
+                        case "authentication_error":
+                            throw new Exception("Authentication with Stripe failed.");
+                        case "card_error":
+                            throw new Exception("Card error: " + e.StripeError.Message);
+                        case "idempotency_error":
+                            throw new Exception("Idempotency error occurred.");
+                        case "invalid_request_error":
+                            throw new Exception("Invalid request to Stripe: " + e.StripeError.Message);
+                        case "rate_limit_error":
+                            throw new Exception("Too many requests made to the Stripe API.");
+                        default:
+                            throw new Exception("Unknown error occurred while communicating with Stripe.");
+                    }
+                }
+                else
+                {
+                    // Handle other types of exceptions.
+                    throw new Exception("An error occurred while communicating with Stripe.", e);
+                }
+            }
+        }
+
+
     }
 }
 
