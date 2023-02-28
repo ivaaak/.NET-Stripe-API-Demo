@@ -43,7 +43,7 @@ namespace Stripe_Web_Api
             {
                 var type = context.Type;
 
-                // Check whether the type is defined in the Stripe.NET library
+                // Check whether the type is a local entity or defined in the Stripe.NET library
                 if (type == typeof(AddStripeCard) 
                     || type == typeof(AddStripeCustomer) 
                     || type == typeof(AddStripePayment) 
@@ -52,17 +52,17 @@ namespace Stripe_Web_Api
                     || type == typeof(StripeCustomer) 
                     || type == typeof(StripePayment))
                 {
-                    // Include the type in the Swagger schema
+                    // For local Entities do nothing
                 }
                 else
                 {
-                    // Exclude the type from the Swagger schema
+                    // Exclude the Library's objects from the swagger UI.
+                    // There are too many and it crashes the page.
                     schema.Example = null;
                     schema.Properties.Clear();
                 }
             }
         }
-        
     }
 }
 
